@@ -1,5 +1,5 @@
 ---
 title: "Gallerie Immergrün"
 description: "Spatial & Immersive Art"
-layout: "gallery"  
+layout: "list"
 ---
