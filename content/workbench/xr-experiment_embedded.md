@@ -6,4 +6,4 @@ summary: "A floating cube in A-Frame."
 
 Here is the scene running live:
 
-<iframe src="/studio/apps/cube.html" width="100%" height="400px" frameborder="0"></iframe>
+<iframe src="https://rschmaelzle.github.io/studio/apps/cube.html" width="100%" height="400px" frameborder="0"></iframe>
