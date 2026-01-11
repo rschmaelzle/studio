@@ -4,6 +4,9 @@ date: 2024-01-02
 summary: "A floating cube in A-Frame."
 tags: ["XR", "Code"]
 ---
-[Launch App](/apps/cube.html)
 
-This is a test of the 3D engine...
+This is my first test of the 3D engine.
+
+### [🚀 Launch the App](/studio/apps/cube.html)
+
+*(Clicking this will open the 3D scene in a new window)*
