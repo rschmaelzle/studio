@@ -1,4 +1,21 @@
-title = "Studio Evergreen"
+baseURL = 'https://rschmaelzle.github.io/studio/'
+languageCode = 'en-us'
+title = 'Studio Evergreen'
+theme = 'blowfish'
+
+# Keeps this site "Hidden" from Google (The Public-Private Strategy)
+enableRobotsTXT = true
+
+[params]
+  colorScheme = "blowfish" 
+  defaultBackgroundImage = "background.jpg"
+
+  [params.homepage]
+    layout = "hero" 
+    showRecent = false 
+    
+  [params.header]
+    layout = "basic"
 
 [menu]
   [[menu.main]]
@@ -6,7 +23,7 @@ title = "Studio Evergreen"
     name = "The Library"
     url = "/library/"
     weight = 10
-    params.icon = "book" # Blowfish supports icons!
+    params.icon = "book"
 
   [[menu.main]]
     identifier = "workbench"
@@ -20,4 +37,4 @@ title = "Studio Evergreen"
     name = "Gallerie Immergrün"
     url = "/immergruen/"
     weight = 30
-    params.icon = "glasses" # VR glasses icon
+    params.icon = "glasses"
