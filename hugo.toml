@@ -16,6 +16,12 @@ enableRobotsTXT = true
     
   [params.header]
     layout = "basic"
+	
+  [params.list]
+    showHero = true       # Default to showing images
+    showSummary = true    # Show the text summary
+    showTableOfContents = false
+    showBreadcrumbs = true
 
 [menu]
   [[menu.main]]
