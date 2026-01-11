@@ -1,0 +1,23 @@
+title = "Studio Evergreen"
+
+[menu]
+  [[menu.main]]
+    identifier = "library"
+    name = "The Library"
+    url = "/library/"
+    weight = 10
+    params.icon = "book" # Blowfish supports icons!
+
+  [[menu.main]]
+    identifier = "workbench"
+    name = "The Workbench"
+    url = "/workbench/"
+    weight = 20
+    params.icon = "terminal"
+
+  [[menu.main]]
+    identifier = "immergruen"
+    name = "Gallerie Immergrün"
+    url = "/immergruen/"
+    weight = 30
+    params.icon = "glasses" # VR glasses icon
