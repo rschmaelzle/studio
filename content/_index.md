@@ -2,12 +2,15 @@
 title: "Studio Evergreen"
 description: "A digital space for fiction, code, and immersive art."
 layout: "hero"
-links:                   <-- THIS WAS THE FIX
+links:
   - title: "Read The Library"
-    link: "/studio/library/"    <-- Added /studio/ to be safe
+    link: "/studio/library/"
     icon: "book"
+  - title: "The Workbench"
+    link: "/studio/workbench/"
+    icon: "terminal"
   - title: "Enter The Gallery"
-    link: "/studio/immergruen/" <-- Added /studio/ to be safe
+    link: "/studio/immergruen/"
     icon: "glasses"
 ---
 
