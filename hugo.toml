@@ -3,12 +3,13 @@ languageCode = 'en-us'
 title = 'Studio Evergreen'
 theme = 'blowfish'
 
-# Keeps this site "Hidden" from Google (The Public-Private Strategy)
+# Privacy Strategy: Keep this "Public but Hidden" from search engines
 enableRobotsTXT = true
 
 [params]
   colorScheme = "blowfish" 
-  defaultBackgroundImage = "background.jpg"
+  # Dark moody studio image (Unsplash) so white text pops
+  defaultBackgroundImage = "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2000&auto=format&fit=crop"
 
   [params.homepage]
     layout = "hero" 
@@ -16,10 +17,11 @@ enableRobotsTXT = true
     
   [params.header]
     layout = "basic"
-	
+
+  # Default List Settings (Can be overridden in content folders)
   [params.list]
-    showHero = true       # Default to showing images
-    showSummary = true    # Show the text summary
+    showHero = true
+    showSummary = true
     showTableOfContents = false
     showBreadcrumbs = true
 
@@ -45,6 +47,7 @@ enableRobotsTXT = true
     weight = 30
     params.icon = "glasses"
 
+# Allow iframes (for your WebXR apps)
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]

@@ -1,13 +1,13 @@
 ---
 title: "Studio Evergreen"
 description: "A digital space for fiction, code, and immersive art."
-layout: "hero"  # This triggers the big visual layout
-action:
+layout: "hero"
+links:                   <-- THIS WAS THE FIX
   - title: "Read The Library"
-    link: "/library/"
+    link: "/studio/library/"    <-- Added /studio/ to be safe
     icon: "book"
   - title: "Enter The Gallery"
-    link: "/immergruen/"
+    link: "/studio/immergruen/" <-- Added /studio/ to be safe
     icon: "glasses"
 ---
 
