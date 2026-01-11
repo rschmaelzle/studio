@@ -38,3 +38,8 @@ enableRobotsTXT = true
     url = "/immergruen/"
     weight = 30
     params.icon = "glasses"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
