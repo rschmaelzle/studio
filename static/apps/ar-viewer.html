@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Model Viewer (XR Demo)</title>
+    <!-- Import the Component -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    <style>
+        body { margin: 0; background-color: #1a1a1a; font-family: sans-serif; }
+        model-viewer { width: 100vw; height: 100vh; }
+        #ar-button {
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: white; border-radius: 4px; border: none; padding: 10px 20px;
+            font-weight: bold; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+      THIS IS THE MAGIC BLOCK 
+      You can replace 'src' with a link to your own .glb file from your "Warehouse"
+    -->
+    <model-viewer 
+        src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+        alt="A 3D model of an astronaut"
+        ar 
+        ar-modes="webxr scene-viewer quick-look" 
+        camera-controls 
+        auto-rotate
+        shadow-intensity="1">
+        
+        <button slot="ar-button" id="ar-button">
+            View in your space (AR)
+        </button>
+    </model-viewer>
+</body>
+</html>
