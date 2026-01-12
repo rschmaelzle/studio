@@ -5,10 +5,7 @@ summary: "A noir mystery aboard the SS Alma Mater, where tenure is life and phys
 tags: ["Fiction", "Sci-Fi", "Noir"]
 layout: "article"
 showAuthor: false
-featuredImage: "https://rschmaelzle.github.io/studio/sublimination_and_punishment.jpg"
----
-
-# THIS ADDS THE COVER IMAGE
+featuredImage: "sublimation_and_punishment.jpg"
 ---
 
 <div class="literary-container">

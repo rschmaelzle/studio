@@ -1,10 +1,11 @@
 ---
 title: "The Library"
 description: "Fiction and Essays"
-layout: "gallery"       # <--- SWITCH TO GALLERY MODE (TILES)
+layout: "gallery"       # Force Gallery Mode
+showHero: true 
 cascade:
   showDate: true
-  showHero: true        # <--- SHOW IMAGE ON THE CARD (The Tile)
+  showHero: true 
   showSummary: true
   showTableOfContents: false
 ---
