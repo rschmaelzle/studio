@@ -31,10 +31,9 @@ enableRobotsTXT = true
   # 0. BACK TO REALITY
   [[menu.main]]
     identifier = "pro-site"
-    name = "Ralf Schmaelzle (Pro)"
-    url = "https://rschmaelzle.github.io/" # Points back to the main site
+    name = "🎓 Ralf Schmaelzle (Pro)"
+    url = "https://rschmaelzle.github.io/" 
     weight = 0
-    pre = "🎓"
 	
   # 1. THE LIBRARY
   [[menu.main]]
