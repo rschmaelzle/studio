@@ -1,11 +1,51 @@
-/* 1. Force the background image to be 100% visible and true-color */
+/* --- 1. THE BACKGROUND IMAGE FIX --- */
+
+/* Force the background to be 100% visible and true-color */
 #background-image {
     opacity: 1 !important;
     filter: none !important;
     mix-blend-mode: normal !important;
 }
 
-/* 2. Remove the blue overlay that sits on top of the image */
-.fixed.inset-0.z-0 {
+/* Kill the overlay div that Blowfish adds (The source of the blue tint) */
+.pointer-events-none.fixed.inset-0.z-0 {
     background-color: transparent !important;
+    background-image: none !important;
+    display: none !important;
 }
+
+/* --- 2. THE TEXT CARD (The Box) --- */
+
+/* The Container for your text */
+.studio-card {
+    /* Day Mode: White Box with Black Text */
+    background-color: rgba(255, 255, 255, 0.92);
+    color: #000000 !important;
+    
+    /* Layout styling */
+    padding: 3rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    backdrop-filter: blur(8px); /* Frosted glass effect */
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Make sure bold text and links inside the card are readable */
+.studio-card strong { color: #000000 !important; }
+.studio-card p { color: #000000 !important; }
+
+/* --- 3. DARK MODE SUPPORT --- */
+
+/* When the toggle switch is clicked, invert the colors */
+html.dark .studio-card {
+    /* Night Mode: Black Box with White Text */
+    background-color: rgba(0, 0, 0, 0.85);
+    color: #ffffff !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+html.dark .studio-card strong { color: #ffffff !important; }
+html.dark .studio-card p { color: #ffffff !important; }
