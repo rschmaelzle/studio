@@ -7,10 +7,12 @@ enableRobotsTXT = true
 
 [params]
   colorScheme = "blowfish" 
-  defaultBackgroundImage = "background.jpg"
   
-  # YOUR NEW EVERGREEN ICON
-  favicon = "favicon.svg"
+  # NUCLEAR FIX: Use the FULL URL for the background image
+  defaultBackgroundImage = "https://rschmaelzle.github.io/studio/background.jpg"
+  
+  # NUCLEAR FIX: Use the FULL URL for the favicon
+  favicon = "https://rschmaelzle.github.io/studio/favicon.svg"
 
   [params.homepage]
     layout = "hero" 
@@ -26,30 +28,32 @@ enableRobotsTXT = true
     showBreadcrumbs = true
 
 [menu]
-  # 1. THE LIBRARY (Book Icon is universal)
+  # 1. THE LIBRARY
   [[menu.main]]
     identifier = "library"
-    name = "Library"   # Removed "The" for cleaner look
+    name = "The Library"
     url = "/library/"
     weight = 10
-    pre = "book"       # 'pre' puts the icon BEFORE the text
-    params.icon = "book"
+    pre = "📖"            # Emoji Fallback (Universal)
+    params.icon = "book-open"
 
-  # 2. THE WORKBENCH (Code/Terminal Icon)
+  # 2. THE WORKBENCH
   [[menu.main]]
     identifier = "workbench"
-    name = "Lab"       # "Lab" is recognized globally
+    name = "The Workbench"
     url = "/workbench/"
     weight = 20
-    params.icon = "code-bracket" # A more visual "code" symbol than terminal
+    pre = "💻"            # Emoji Fallback
+    params.icon = "terminal"
 
-  # 3. THE GALLERY (Eye/View Icon)
+  # 3. GALLERIE IMMERGRÜN
   [[menu.main]]
     identifier = "immergruen"
-    name = "Gallery"   # Universal term
+    name = "Gallerie Immergrün"
     url = "/immergruen/"
     weight = 30
-    params.icon = "eye" # "Eye" implies looking/visuals better than glasses
+    pre = "👁️"            # Emoji Fallback
+    params.icon = "eye"
 
 [markup]
   [markup.goldmark]
