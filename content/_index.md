@@ -4,14 +4,17 @@ description: "A digital space for fiction, code, and immersive art."
 layout: "hero"
 links:
   - title: "Read The Library"
-    link: "/studio/library/"
+    url: "/studio/library/"     
     icon: "book"
+    target: "_self"
   - title: "The Workbench"
-    link: "/studio/workbench/"
+    url: "/studio/workbench/"
     icon: "terminal"
+    target: "_self"
   - title: "Enter The Gallery"
-    link: "/studio/immergruen/"
+    url: "/studio/immergruen/"
     icon: "glasses"
+    target: "_self"
 ---
 
 Welcome to **Studio Evergreen**.
