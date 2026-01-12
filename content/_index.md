@@ -4,31 +4,30 @@ description: "A digital space for text, code, and immersive art."
 layout: "hero"
 ---
 
-<div class="studio-card">
+<div style="text-align: center; max-width: 800px; margin: 0 auto;">
 
-  <h2 style="margin-top: 0; text-transform: uppercase;">Welcome to Studio Evergreen</h2>
-  
-  <p style="font-size: 1.1rem; opacity: 0.9;">
-    This is my digital atelier—a place where the messy work of creation happens.
-  </p>
+<span class="highlight-text" style="font-size: 2.5rem; text-transform: uppercase;">
+Welcome to Studio Evergreen
+</span>
 
-  <br>
+<br><br><br>
 
-  <!-- CLEAN BUTTON CONTAINER -->
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
-  
-    <a href="/studio/library/" class="btn-black">
-      📖 The Library
-    </a>
+<span class="highlight-text" style="font-size: 1.2rem;">
+This is my digital atelier—a place where the messy work of creation happens.
+</span>
 
-    <a href="/studio/workbench/" class="btn-black">
-      💻 The Workbench
-    </a>
+<br><br><br>
 
-    <a href="/studio/immergruen/" class="btn-black">
-      👓 The Gallery
-    </a>
+<a href="/studio/library/" class="btn-main">
+📖 The Library
+</a>
 
-  </div>
+<a href="/studio/workbench/" class="btn-main">
+💻 The Workbench
+</a>
+
+<a href="/studio/immergruen/" class="btn-main">
+👓 The Gallery
+</a>
 
 </div>
