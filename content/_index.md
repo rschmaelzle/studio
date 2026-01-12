@@ -18,8 +18,8 @@ layout: "hero"
 
 <br><br><br>
 
-<!-- THE BUTTONS (Stacked and Spaced) -->
-<div style="display: flex; flex-direction: column; gap: 1.5rem; align-items: flex-start;">
+<!-- THE BUTTONS (Centered) -->
+<div style="display: flex; flex-direction: column; gap: 1.5rem; align-items: center;">
 
   {{< button href="/studio/library/" target="_self" >}}
   <strong>📖 THE LIBRARY</strong>
