@@ -1,42 +1,46 @@
-/* 1. FORCE RAW IMAGE (No Tint) */
+/* --- 1. HOMEPAGE BACKGROUND FIX (Only target the image) --- */
 #background-image {
     opacity: 1 !important;
     filter: none !important;
     mix-blend-mode: normal !important;
 }
 
+/* Hide the dark overlay ONLY on the homepage */
 .fixed.inset-0.z-0 {
-    display: none !important;
+    opacity: 0 !important;
 }
 
-body { background-color: #000 !important; }
-
-/* 2. HIGHLIGHTER TEXT STYLE */
-/* This puts the white box behind the text lines */
+/* --- 2. HIGHLIGHTER TEXT (Fixed Spacing) --- */
 .highlight-text {
     background-color: #ffffff;
     color: #000000 !important;
     
-    /* This makes the background wrap tight to the text */
-    display: inline;
-    padding: 0.5rem 1rem;
+    /* This makes it look like a marker */
+    display: inline; 
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
     
+    padding: 0.2em 0.6em; /* Tighter padding */
     font-weight: 800;
-    line-height: 2.4; /* Space out lines */
-    box-shadow: 4px 4px 0px rgba(0,0,0,0.5);
+    line-height: 1.6; /* TIGHTER SPACING (Fixed the gap issue) */
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.4);
 }
 
-/* 3. BUTTON STYLE */
+.highlight-title {
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    line-height: 1.4; /* Specific tight spacing for the big title */
+}
+
+/* --- 3. BUTTONS (Standardized) --- */
 .btn-main {
     background-color: #ffffff !important;
     color: #000000 !important;
     
-    display: block; /* Forces them to stack vertically */
-    width: 260px;   /* Fixed width */
-    padding: 15px 0;
-    margin: 15px auto; /* Centers them */
+    display: block;
+    width: 250px;
+    padding: 12px 0;
+    margin: 10px auto; /* Close vertical spacing */
     
     text-align: center;
     font-weight: 900;
@@ -44,13 +48,12 @@ body { background-color: #000 !important; }
     text-decoration: none !important;
     border: none;
     
-    /* Hard Shadow */
     box-shadow: 6px 6px 0px #000000 !important;
     transition: transform 0.2s;
 }
 
 .btn-main:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 10px 10px 0px #000000 !important;
-    background-color: #f0f0f0 !important;
+    transform: translate(-2px, -2px);
+    background-color: #f2f2f2 !important;
+    box-shadow: 8px 8px 0px #000000 !important;
 }
