@@ -9,8 +9,3 @@
 .fixed.inset-0.z-0 {
     background-color: transparent !important;
 }
-
-/* 3. Ensure the text remains readable by adding a subtle shadow instead */
-h1, h2, h3, p, a {
-    text-shadow: 0px 0px 8px rgba(0,0,0,0.8);
-}

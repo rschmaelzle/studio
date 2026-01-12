@@ -5,18 +5,21 @@ layout: "hero"
 ---
 
 This is my digital atelier—a place where the messy work of creation happens.
-It is divided into three rooms: a library for stories, a workbench for code, and a gallery for spatial experiments.
 
 <br>
 
-{{< button href="/studio/library/" target="_self" >}}
-📖 Read The Library
-{{< /button >}}
-           
-{{< button href="/studio/workbench/" target="_self" >}}
-💻 The Workbench
-{{< /button >}}
-           
-{{< button href="/studio/immergruen/" target="_self" >}}
-👓 Enter The Gallery
-{{< /button >}}
+<div style="display: flex; flex-direction: column; gap: 1.5rem; align-items: center; justify-content: center;">
+
+  {{< button href="/studio/library/" target="_self" >}}
+  📖 <strong>A LIBRARY</strong> for stories
+  {{< /button >}}
+
+  {{< button href="/studio/workbench/" target="_self" >}}
+  💻 <strong>A WORKBENCH</strong> for code
+  {{< /button >}}
+
+  {{< button href="/studio/immergruen/" target="_self" >}}
+  👓 <strong>A GALLERY</strong> for spatial experiences
+  {{< /button >}}
+
+</div>
