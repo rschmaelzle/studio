@@ -10,7 +10,7 @@ enableRobotsTXT = true
   
   # ABSOLUTE PATHS (Do not change these unless you move domains)
   defaultBackgroundImage = "https://rschmaelzle.github.io/studio/background.jpg"
-  favicon = "https://rschmaelzle.github.io/studio/favicon.svg"
+  favicon = "static/tree.svg"
 
   [params.homepage]
     layout = "hero" 
