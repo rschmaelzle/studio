@@ -1,55 +1,52 @@
-baseURL = 'https://rschmaelzle.github.io/studio/'
-languageCode = 'en-us'
-title = 'Studio Evergreen'
-theme = 'blowfish'
+/* --- 1. THE BACKGROUND FIX (Nuclear Option) --- */
 
-enableRobotsTXT = true
+/* Force the image to show raw colors */
+#background-image {
+    opacity: 1 !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+}
 
-[params]
-  colorScheme = "blowfish" 
-  
-  # CORRECTED: Removed "/static/" from the path
-  defaultBackgroundImage = "https://rschmaelzle.github.io/studio/background.jpg"
-  
-  # CORRECTED: Removed "static." typo and path
-  favicon = "https://rschmaelzle.github.io/studio/favicon.svg"
+/* 
+   Blowfish uses multiple layers of tinting. 
+   We must kill ALL of them aggressively.
+*/
+.fixed.inset-0.z-0, 
+div[class*="bg-neutral-900"], 
+div[class*="bg-neutral-800"] {
+    background-color: transparent !important;
+    background-image: none !important;
+    backdrop-filter: none !important;
+}
 
-  [params.homepage]
-    layout = "hero" 
-    showRecent = false 
+/* --- 2. THE HIGHLIGHTER TEXT STYLE --- */
+
+/* This mimics the "You could be sitting here" look */
+.highlight-text {
+    background-color: #ffffff; /* Pure White Background */
+    color: #000000 !important; /* Pure Black Text */
     
-  [params.header]
-    layout = "basic"
+    /* This makes the background wrap tight to the text */
+    display: inline;
+    padding: 0.3rem 0.8rem;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    
+    /* Font styling */
+    font-weight: 800;
+    line-height: 2.2; /* Extra spacing so the white bars don't overlap */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
 
-  [params.list]
-    showHero = false
-    showSummary = true
-    showTableOfContents = false
-    showBreadcrumbs = true
+/* Optional: Make the Welcome title bigger */
+.highlight-title {
+    font-size: 2.5rem;
+    text-transform: uppercase;
+}
 
-[menu]
-  # 1. THE LIBRARY
-  [[menu.main]]
-    identifier = "library"
-    name = "📖 The Library"
-    url = "/library/"
-    weight = 10
-
-  # 2. THE WORKBENCH
-  [[menu.main]]
-    identifier = "workbench"
-    name = "💻 The Workbench"
-    url = "/workbench/"
-    weight = 20
-
-  # 3. GALLERIE IMMERGRÜN
-  [[menu.main]]
-    identifier = "immergruen"
-    name = "👁️ Gallerie Immergrün"
-    url = "/immergruen/"
-    weight = 30
-
-[markup]
-  [markup.goldmark]
-    [markup.goldmark.renderer]
-      unsafe = true
+/* --- 3. CLEAN BUTTONS --- */
+/* Remove any dark boxes around buttons */
+.article-content {
+    background: transparent !important;
+    box-shadow: none !important;
+}

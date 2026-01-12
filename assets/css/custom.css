@@ -1,51 +1,52 @@
-/* --- 1. THE BACKGROUND IMAGE FIX --- */
+/* --- 1. THE BACKGROUND FIX (Nuclear Option) --- */
 
-/* Force the background to be 100% visible and true-color */
+/* Force the image to show raw colors */
 #background-image {
     opacity: 1 !important;
     filter: none !important;
     mix-blend-mode: normal !important;
 }
 
-/* Kill the overlay div that Blowfish adds (The source of the blue tint) */
-.pointer-events-none.fixed.inset-0.z-0 {
+/* 
+   Blowfish uses multiple layers of tinting. 
+   We must kill ALL of them aggressively.
+*/
+.fixed.inset-0.z-0, 
+div[class*="bg-neutral-900"], 
+div[class*="bg-neutral-800"] {
     background-color: transparent !important;
     background-image: none !important;
-    display: none !important;
+    backdrop-filter: none !important;
 }
 
-/* --- 2. THE TEXT CARD (The Box) --- */
+/* --- 2. THE HIGHLIGHTER TEXT STYLE --- */
 
-/* The Container for your text */
-.studio-card {
-    /* Day Mode: White Box with Black Text */
-    background-color: rgba(255, 255, 255, 0.92);
-    color: #000000 !important;
+/* This mimics the "You could be sitting here" look */
+.highlight-text {
+    background-color: #ffffff; /* Pure White Background */
+    color: #000000 !important; /* Pure Black Text */
     
-    /* Layout styling */
-    padding: 3rem;
-    border-radius: 1rem;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    backdrop-filter: blur(8px); /* Frosted glass effect */
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
+    /* This makes the background wrap tight to the text */
+    display: inline;
+    padding: 0.3rem 0.8rem;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    
+    /* Font styling */
+    font-weight: 800;
+    line-height: 2.2; /* Extra spacing so the white bars don't overlap */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-/* Make sure bold text and links inside the card are readable */
-.studio-card strong { color: #000000 !important; }
-.studio-card p { color: #000000 !important; }
-
-/* --- 3. DARK MODE SUPPORT --- */
-
-/* When the toggle switch is clicked, invert the colors */
-html.dark .studio-card {
-    /* Night Mode: Black Box with White Text */
-    background-color: rgba(0, 0, 0, 0.85);
-    color: #ffffff !important;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    border: 1px solid rgba(255,255,255,0.1);
+/* Optional: Make the Welcome title bigger */
+.highlight-title {
+    font-size: 2.5rem;
+    text-transform: uppercase;
 }
 
-html.dark .studio-card strong { color: #ffffff !important; }
-html.dark .studio-card p { color: #ffffff !important; }
+/* --- 3. CLEAN BUTTONS --- */
+/* Remove any dark boxes around buttons */
+.article-content {
+    background: transparent !important;
+    box-shadow: none !important;
+}
