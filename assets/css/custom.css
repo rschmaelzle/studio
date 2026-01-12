@@ -1,6 +1,6 @@
 /* --- 1. THE BACKGROUND FIX (Nuclear Option) --- */
 
-/* Force the image to show raw colors */
+/* Force the image container to show the raw image */
 #background-image {
     opacity: 1 !important;
     filter: none !important;
@@ -8,45 +8,67 @@
 }
 
 /* 
-   Blowfish uses multiple layers of tinting. 
-   We must kill ALL of them aggressively.
+   KILL THE OVERLAY.
+   Target the specific overlay div that Blowfish puts on top of images.
+   We make it transparent and hidden.
 */
 .fixed.inset-0.z-0, 
 div[class*="bg-neutral-900"], 
-div[class*="bg-neutral-800"] {
+div[class*="bg-opacity"] {
     background-color: transparent !important;
     background-image: none !important;
     backdrop-filter: none !important;
+    opacity: 0 !important; /* Make the overlay invisible */
 }
 
 /* --- 2. THE HIGHLIGHTER TEXT STYLE --- */
 
-/* This mimics the "You could be sitting here" look */
 .highlight-text {
-    background-color: #ffffff; /* Pure White Background */
-    color: #000000 !important; /* Pure Black Text */
-    
-    /* This makes the background wrap tight to the text */
+    background-color: #ffffff;
+    color: #000000 !important;
     display: inline;
-    padding: 0.3rem 0.8rem;
+    padding: 0.4rem 0.8rem;
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
-    
-    /* Font styling */
     font-weight: 800;
-    line-height: 2.2; /* Extra spacing so the white bars don't overlap */
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    line-height: 2.2;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
 }
 
-/* Optional: Make the Welcome title bigger */
 .highlight-title {
     font-size: 2.5rem;
     text-transform: uppercase;
+    letter-spacing: -1px;
 }
 
-/* --- 3. CLEAN BUTTONS --- */
-/* Remove any dark boxes around buttons */
-.article-content {
-    background: transparent !important;
-    box-shadow: none !important;
+/* --- 3. CUSTOM BUTTONS (Matching the Highlighter) --- */
+
+/* Override the default blue buttons */
+.article-content a.button {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    
+    /* Make them look like the text bars */
+    border: none !important;
+    border-radius: 0 !important; /* Sharp corners */
+    font-weight: 900 !important;
+    text-transform: uppercase;
+    padding: 1rem 2rem;
+    
+    /* Add a solid shadow to make them pop */
+    box-shadow: 5px 5px 0px #000000 !important;
+    transition: transform 0.1s ease;
+}
+
+/* Hover effect */
+.article-content a.button:hover {
+    transform: translate(-2px, -2px); /* Move up slightly */
+    box-shadow: 8px 8px 0px #000000 !important; /* Bigger shadow */
+}
+
+/* Mobile fix to ensure buttons don't stretch too wide */
+.article-content a.button {
+    width: auto;
+    display: inline-block;
+    text-align: center;
 }
