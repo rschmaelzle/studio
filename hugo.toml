@@ -28,6 +28,14 @@ enableRobotsTXT = true
     showBreadcrumbs = true
 
 [menu]
+  # 0. BACK TO REALITY
+  [[menu.main]]
+    identifier = "pro-site"
+    name = "Ralf Schmaelzle (Pro)"
+    url = "https://rschmaelzle.github.io/" # Points back to the main site
+    weight = 0
+    pre = "🎓"
+	
   # 1. THE LIBRARY
   [[menu.main]]
     identifier = "library"
