@@ -6,10 +6,10 @@ theme = 'blowfish'
 enableRobotsTXT = true
 
 [params]
-  colorScheme = "blowfish" 
+  colorScheme = "avocado"
   
   # UPDATE THIS LINE TO YOUR NEW FILENAME:
-  defaultBackgroundImage = "https://rschmaelzle.github.io/studio/background4.jpg"
+  defaultBackgroundImage = "https://rschmaelzle.github.io/studio/background3.jpg"
   
   # ENSURE THIS MATCHES YOUR ICON FILENAME:
   favicon = "https://rschmaelzle.github.io/studio/icon.svg"
