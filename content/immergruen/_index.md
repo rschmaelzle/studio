@@ -2,11 +2,12 @@
 title: "Gallerie Immergrün"
 description: "Spatial & Immersive Art"
 layout: "list"
+showHero: false          # No banner at the top of the gallery page
 cascade:
-  showDate: false        # Art is timeless, hide the dates
-  showHero: true         # SHOW THE IMAGES!
+  showHero: true         # BUT show thumbnails for the art pieces inside!
+  showDate: false
   showSummary: true
-  invertPagination: true # Show oldest (best) works first? Or standard.
+  invertPagination: true
 ---
 
 **The Immergrün** is a collection of WebXR experiments and spatial concepts. 
