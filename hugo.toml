@@ -9,7 +9,7 @@ enableRobotsTXT = true
   colorScheme = "blowfish" 
   
   # ABSOLUTE PATHS (Do not change these unless you move domains)
-  defaultBackgroundImage = "https://rschmaelzle.github.io/studio/background.jpg"
+  defaultBackgroundImage = "https://rschmaelzle.github.io/studio/background3.jpg"
   favicon = "https://rschmaelzle.github.io/studio/icon.svg?v=2"
 
 
