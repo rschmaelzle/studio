@@ -1,4 +1,4 @@
-\baseURL = 'https://rschmaelzle.github.io/studio/'
+baseURL = 'https://rschmaelzle.github.io/studio/'
 languageCode = 'en-us'
 title = 'Studio Evergreen'
 theme = 'blowfish'
@@ -7,8 +7,10 @@ enableRobotsTXT = true
 
 [params]
   colorScheme = "blowfish" 
-  # USE YOUR LOCAL IMAGE (Locating it in static/background.jpg)
   defaultBackgroundImage = "background.jpg"
+  
+  # YOUR NEW EVERGREEN ICON
+  favicon = "favicon.svg"
 
   [params.homepage]
     layout = "hero" 
@@ -18,32 +20,36 @@ enableRobotsTXT = true
     layout = "basic"
 
   [params.list]
-    showHero = false        # <--- THIS REMOVES THE BANNER ON SUB-PAGES
+    showHero = false
     showSummary = true
     showTableOfContents = false
     showBreadcrumbs = true
 
 [menu]
+  # 1. THE LIBRARY (Book Icon is universal)
   [[menu.main]]
     identifier = "library"
-    name = "The Library"
+    name = "Library"   # Removed "The" for cleaner look
     url = "/library/"
     weight = 10
+    pre = "book"       # 'pre' puts the icon BEFORE the text
     params.icon = "book"
 
+  # 2. THE WORKBENCH (Code/Terminal Icon)
   [[menu.main]]
     identifier = "workbench"
-    name = "The Workbench"
+    name = "Lab"       # "Lab" is recognized globally
     url = "/workbench/"
     weight = 20
-    params.icon = "terminal"
+    params.icon = "code-bracket" # A more visual "code" symbol than terminal
 
+  # 3. THE GALLERY (Eye/View Icon)
   [[menu.main]]
     identifier = "immergruen"
-    name = "Gallerie Immergrün"
+    name = "Gallery"   # Universal term
     url = "/immergruen/"
     weight = 30
-    params.icon = "glasses"
+    params.icon = "eye" # "Eye" implies looking/visuals better than glasses
 
 [markup]
   [markup.goldmark]
