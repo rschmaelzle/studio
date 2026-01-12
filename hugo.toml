@@ -9,10 +9,10 @@ enableRobotsTXT = true
   colorScheme = "blowfish" 
   
   # NUCLEAR FIX: Use the FULL URL for the background image
-  defaultBackgroundImage = "https://rschmaelzle.github.io/studio/background.jpg"
+  defaultBackgroundImage = "https://rschmaelzle.github.io/studio/static/background.jpg"
   
   # NUCLEAR FIX: Use the FULL URL for the favicon
-  favicon = "https://rschmaelzle.github.io/studio/favicon.svg"
+  favicon = "https://rschmaelzle.github.io/studio/static.favicon.svg"
 
   [params.homepage]
     layout = "hero" 
@@ -31,29 +31,23 @@ enableRobotsTXT = true
   # 1. THE LIBRARY
   [[menu.main]]
     identifier = "library"
-    name = "The Library"
+    name = "📖 The Library"   # Icon is now part of the text
     url = "/library/"
     weight = 10
-    pre = "📖"            # Emoji Fallback (Universal)
-    params.icon = "book-open"
 
   # 2. THE WORKBENCH
   [[menu.main]]
     identifier = "workbench"
-    name = "The Workbench"
+    name = "💻 The Workbench" # Icon is now part of the text
     url = "/workbench/"
     weight = 20
-    pre = "💻"            # Emoji Fallback
-    params.icon = "terminal"
 
   # 3. GALLERIE IMMERGRÜN
   [[menu.main]]
     identifier = "immergruen"
-    name = "Gallerie Immergrün"
+    name = "👁️ Gallerie Immergrün" # Icon is now part of the text
     url = "/immergruen/"
     weight = 30
-    pre = "👁️"            # Emoji Fallback
-    params.icon = "eye"
 
 [markup]
   [markup.goldmark]

@@ -1,0 +1,16 @@
+/* 1. Force the background image to be 100% visible and true-color */
+#background-image {
+    opacity: 1 !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+}
+
+/* 2. Remove the blue overlay that sits on top of the image */
+.fixed.inset-0.z-0 {
+    background-color: transparent !important;
+}
+
+/* 3. Ensure the text remains readable by adding a subtle shadow instead */
+h1, h2, h3, p, a {
+    text-shadow: 0px 0px 8px rgba(0,0,0,0.8);
+}
