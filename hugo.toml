@@ -8,11 +8,11 @@ enableRobotsTXT = true
 [params]
   colorScheme = "blowfish" 
   
-  # NUCLEAR FIX: Use the FULL URL for the background image
-  defaultBackgroundImage = "https://rschmaelzle.github.io/studio/static/background.jpg"
+  # CORRECTED: Removed "/static/" from the path
+  defaultBackgroundImage = "https://rschmaelzle.github.io/studio/background.jpg"
   
-  # NUCLEAR FIX: Use the FULL URL for the favicon
-  favicon = "https://rschmaelzle.github.io/studio/static.favicon.svg"
+  # CORRECTED: Removed "static." typo and path
+  favicon = "https://rschmaelzle.github.io/studio/favicon.svg"
 
   [params.homepage]
     layout = "hero" 
@@ -31,21 +31,21 @@ enableRobotsTXT = true
   # 1. THE LIBRARY
   [[menu.main]]
     identifier = "library"
-    name = "📖 The Library"   # Icon is now part of the text
+    name = "📖 The Library"
     url = "/library/"
     weight = 10
 
   # 2. THE WORKBENCH
   [[menu.main]]
     identifier = "workbench"
-    name = "💻 The Workbench" # Icon is now part of the text
+    name = "💻 The Workbench"
     url = "/workbench/"
     weight = 20
 
   # 3. GALLERIE IMMERGRÜN
   [[menu.main]]
     identifier = "immergruen"
-    name = "👁️ Gallerie Immergrün" # Icon is now part of the text
+    name = "👁️ Gallerie Immergrün"
     url = "/immergruen/"
     weight = 30
 
