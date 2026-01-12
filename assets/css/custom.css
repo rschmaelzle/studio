@@ -1,36 +1,66 @@
-/* 1. Fix the Background Image (Make it clear) */
+/* --- 1. BACKGROUND FIX (Keep Image Raw) --- */
 #background-image {
     opacity: 1 !important;
     filter: none !important;
     mix-blend-mode: normal !important;
 }
 
-/* 2. Remove the dark overlay */
 .fixed.inset-0.z-0 {
     display: none !important;
 }
 
-/* 3. The Studio Card (The Box) - Restoring the glass look */
+body { background-color: #000 !important; }
+
+/* --- 2. THE STUDIO CARD (The Box) --- */
 .studio-card {
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.85); /* White Frosted Glass */
     color: #000000;
     padding: 3rem;
     border-radius: 1rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    max-width: 800px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    max-width: 700px;
     margin: 0 auto;
     text-align: center;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(8px);
 }
 
-/* 4. Dark Mode Support for the Card */
+/* Dark Mode support for the Card */
 html.dark .studio-card {
-    background-color: rgba(30, 30, 30, 0.9);
+    background-color: rgba(20, 20, 20, 0.85); /* Black Frosted Glass */
     color: #ffffff;
     border: 1px solid rgba(255,255,255,0.1);
 }
 
-/* Ensure links/buttons inside the card look right */
-.studio-card a {
-    text-decoration: none;
+/* --- 3. THE CLEAN BLACK BUTTONS --- */
+.btn-black {
+    background-color: #000000;
+    color: #ffffff !important; /* Force White Text */
+    
+    display: inline-block;
+    width: 220px; /* Fixed width for alignment */
+    padding: 15px 0;
+    
+    border-radius: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-decoration: none !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+    border: 2px solid transparent;
+}
+
+/* Hover Effect */
+.btn-black:hover {
+    transform: translateY(-3px);
+    background-color: #333333;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+/* Dark Mode: Make buttons White so they pop against the black card */
+html.dark .btn-black {
+    background-color: #ffffff;
+    color: #000000 !important;
+}
+html.dark .btn-black:hover {
+    background-color: #e0e0e0;
 }

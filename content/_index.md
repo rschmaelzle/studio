@@ -6,23 +6,26 @@ layout: "hero"
 
 <div class="studio-card">
 
-  <h3>Welcome to Studio Evergreen</h3>
-  <p>This is my digital atelier—a place where the messy work of creation happens.</p>
+  <h2 style="margin-top: 0; text-transform: uppercase;">Welcome to Studio Evergreen</h2>
   
+  <p style="font-size: 1.1rem; opacity: 0.9;">
+    This is my digital atelier—a place where the messy work of creation happens.
+  </p>
+
   <br>
 
-  <!-- Using standard HTML buttons for stability -->
-  <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
-
-    <a href="/studio/library/" style="background: black; color: white; padding: 12px 24px; border-radius: 6px; font-weight: bold; width: 200px; display: block;">
+  <!-- CLEAN BUTTON CONTAINER -->
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
+  
+    <a href="/studio/library/" class="btn-black">
       📖 The Library
     </a>
 
-    <a href="/studio/workbench/" style="background: black; color: white; padding: 12px 24px; border-radius: 6px; font-weight: bold; width: 200px; display: block;">
+    <a href="/studio/workbench/" class="btn-black">
       💻 The Workbench
     </a>
 
-    <a href="/studio/immergruen/" style="background: black; color: white; padding: 12px 24px; border-radius: 6px; font-weight: bold; width: 200px; display: block;">
+    <a href="/studio/immergruen/" class="btn-black">
       👓 The Gallery
     </a>
 
