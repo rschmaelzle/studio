@@ -8,10 +8,11 @@ enableRobotsTXT = true
 [params]
   colorScheme = "blowfish" 
   
-  # ABSOLUTE PATHS (Do not change these unless you move domains)
+  # UPDATE THIS LINE TO YOUR NEW FILENAME:
   defaultBackgroundImage = "https://rschmaelzle.github.io/studio/background3.jpg"
-  favicon = "https://rschmaelzle.github.io/studio/icon.svg?v=2"
-
+  
+  # ENSURE THIS MATCHES YOUR ICON FILENAME:
+  favicon = "https://rschmaelzle.github.io/studio/icon.svg"
 
   [params.homepage]
     layout = "hero" 
