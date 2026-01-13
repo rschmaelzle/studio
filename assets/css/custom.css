@@ -104,3 +104,35 @@ body { background-color: transparent !important; }
     width: 100% !important;
     object-fit: cover !important;
 }
+
+/* --- FORCE LIBRARY GRID --- */
+
+/* Target the container that holds the list items */
+section .flex.flex-col.gap-10 {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    gap: 2rem !important;
+}
+
+/* Force the items to look like cards */
+section .flex.flex-col.gap-10 > div {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 100%;
+}
+
+/* Ensure the image takes up space */
+section .flex.flex-col.gap-10 > div img {
+    height: 200px !important;
+    width: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+/* Dark mode fix for the cards */
+html.dark section .flex.flex-col.gap-10 > div {
+    background-color: rgba(30, 30, 30, 0.9) !important;
+    border: 1px solid #444;
+}
