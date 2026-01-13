@@ -1,9 +1,11 @@
 ---
 title: "Sublimation and Punishment"
 date: 2024-05-21
-featuredImage: "coverA.jpg"  <-- Just the filename now!
+summary: "A noir mystery aboard the SS Alma Mater, where tenure is life and physics is the only law."
+tags: ["Fiction", "Sci-Fi", "Noir"]
 layout: "article"
 showAuthor: false
+featuredImage: "coverA.jpg"
 ---
 
 <div class="literary-container">
