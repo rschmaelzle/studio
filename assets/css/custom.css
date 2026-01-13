@@ -1,26 +1,27 @@
 /* --- 1. HARD-CODED BACKGROUND (The Unbreakable Fix) --- */
 
-/* Target the specific background container Blowfish uses */
+
+/* --- 1. BACKGROUND CONTAINER STYLE --- */
 #background-image {
-    /* Tell the browser exactly where the image is */
-    background-image: url('https://rschmaelzle.github.io/studio/background3.jpg') !important;
-    
-    /* Ensure it covers the screen properly */
+    /* Keep the visual style */
     background-size: cover !important;
     background-position: center center !important;
     background-repeat: no-repeat !important;
     
-    /* Force it to be visible */
+    /* Force it to be visible and clear (No Blur/Tint) */
     opacity: 1 !important;
     filter: none !important;
     mix-blend-mode: normal !important;
     display: block !important;
     
-    /* Ensure it stays fixed when scrolling */
+    /* Keep it fixed in the back */
     position: fixed !important;
     top: 0; left: 0; width: 100%; height: 100%;
-    z-index: -1 !important;
+    z-index: -5 !important;
 }
+
+/* Keep the rest of your file (highlight-text, btn-main, etc.) exactly as it is */
+
 
 /* Kill any overlay that might be hiding it */
 .fixed.inset-0.z-0 {
