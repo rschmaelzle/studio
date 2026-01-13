@@ -1,10 +1,13 @@
 ---
 title: "The Library"
 description: "Fiction and Essays"
+layout: "list" 
+showHero: false 
 cascade:
   showDate: true
-  showHero: true
+  showHero: true        # Show images on the cards
   showSummary: true
   invertPagination: true
 ---
+
 A collection of short stories.

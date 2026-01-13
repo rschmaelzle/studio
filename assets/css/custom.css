@@ -1,38 +1,41 @@
-/* --- 1. HARD-CODED BACKGROUND (The Unbreakable Fix) --- */
+/* =========================================
+   1. GLOBAL BACKGROUND FIXES (Studio Look)
+   ========================================= */
 
-
-/* --- 1. BACKGROUND CONTAINER STYLE --- */
+/* Force the image to be raw/untinted and fixed */
 #background-image {
-    /* Keep the visual style */
     background-size: cover !important;
     background-position: center center !important;
     background-repeat: no-repeat !important;
     
-    /* Force it to be visible and clear (No Blur/Tint) */
     opacity: 1 !important;
     filter: none !important;
     mix-blend-mode: normal !important;
     display: block !important;
     
-    /* Keep it fixed in the back */
     position: fixed !important;
     top: 0; left: 0; width: 100%; height: 100%;
     z-index: -5 !important;
 }
 
-/* Keep the rest of your file (highlight-text, btn-main, etc.) exactly as it is */
-
-
-/* Kill any overlay that might be hiding it */
-.fixed.inset-0.z-0 {
+/* Kill theme overlays that create the blue tint */
+.fixed.inset-0.z-0,
+div[class*="bg-neutral"],
+div[class*="bg-opacity"],
+.pointer-events-none {
     display: none !important;
+    opacity: 0 !important;
 }
 
-/* Ensure body background is transparent so image shows through */
+/* Ensure body background is transparent */
 body { background-color: transparent !important; }
 
 
-/* --- 2. HIGHLIGHTER TEXT STYLE --- */
+/* =========================================
+   2. HOMEPAGE STYLING
+   ========================================= */
+
+/* Highlighter Text (White box, Black text) */
 .highlight-text {
     background-color: #ffffff;
     color: #000000 !important;
@@ -45,7 +48,7 @@ body { background-color: transparent !important; }
     box-shadow: 4px 4px 0px rgba(0,0,0,0.5);
 }
 
-/* --- 3. BUTTON STYLE --- */
+/* White Buttons (Sharp & Solid) */
 .btn-main {
     background-color: #ffffff !important;
     color: #000000 !important;
@@ -68,71 +71,51 @@ body { background-color: transparent !important; }
     box-shadow: 10px 10px 0px #000000 !important;
 }
 
-/* SAFEGUARD: Ensure Gallery Images are always visible */
-.card img, 
-.article-header img,
-.featured-image img {
-    opacity: 1 !important;
-    display: block !important;
-    filter: none !important;
-    visibility: visible !important;
-}
 
-/* --- 4. FORCE LIBRARY TILES (Grid Layout) --- */
+/* =========================================
+   3. FORCE LIBRARY GRID (Visual Tiles)
+   ========================================= */
 
-/* Target the container of the articles */
-.py-12 .flex.flex-col.gap-10 {
+/* 
+   Target the specific container Blowfish uses for lists.
+   We use multiple selectors to ensure we catch it.
+*/
+.type-library .flex.flex-col.gap-10,
+.section-library .flex.flex-col.gap-10 {
     display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
     gap: 2rem !important;
 }
 
-/* Ensure the cards stretch to fill the grid */
-.py-12 article {
+/* Turn articles into Cards */
+.type-library article,
+.section-library article {
+    background-color: rgba(255, 255, 255, 0.95) !important; /* White Card */
+    border-radius: 8px;
+    overflow: hidden;
     height: 100%;
     display: flex;
     flex-direction: column;
-    background: rgba(255,255,255,0.05); /* Subtle card background */
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid #000; /* Thin black border */
 }
 
-/* Fix image height in the card */
-.py-12 article img {
-    height: 200px !important;
-    width: 100% !important;
-    object-fit: cover !important;
-}
-
-/* --- FORCE LIBRARY GRID --- */
-
-/* Target the container that holds the list items */
-section .flex.flex-col.gap-10 {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
-    gap: 2rem !important;
-}
-
-/* Force the items to look like cards */
-section .flex.flex-col.gap-10 > div {
-    background-color: rgba(255, 255, 255, 0.9) !important;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    height: 100%;
-}
-
-/* Ensure the image takes up space */
-section .flex.flex-col.gap-10 > div img {
+/* Force the Card Image to size correctly */
+.type-library article img,
+.section-library article img {
     height: 200px !important;
     width: 100% !important;
     object-fit: cover !important;
     display: block !important;
 }
 
-/* Dark mode fix for the cards */
-html.dark section .flex.flex-col.gap-10 > div {
-    background-color: rgba(30, 30, 30, 0.9) !important;
-    border: 1px solid #444;
+/* Hide the 'Read More' text if it clutters the card */
+.type-library article .article-bottom {
+    margin-top: auto;
+}
+
+/* Dark Mode Card Support */
+html.dark .type-library article,
+html.dark .section-library article {
+    background-color: rgba(20, 20, 20, 0.95) !important;
+    border: 1px solid #555;
 }
