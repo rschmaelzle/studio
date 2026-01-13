@@ -5,7 +5,7 @@ summary: "A noir mystery aboard the SS Alma Mater, where tenure is life and phys
 tags: ["Fiction", "Sci-Fi", "Noir"]
 layout: "article"
 showAuthor: false
-featuredImage: "https://rschmaelzle.github.io/studio/coverA.jpg"
+featuredImage: "coverA.jpg"
 ---
 
 <div class="literary-container">

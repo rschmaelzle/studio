@@ -77,3 +77,30 @@ body { background-color: transparent !important; }
     filter: none !important;
     visibility: visible !important;
 }
+
+/* --- 4. FORCE LIBRARY TILES (Grid Layout) --- */
+
+/* Target the container of the articles */
+.py-12 .flex.flex-col.gap-10 {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    gap: 2rem !important;
+}
+
+/* Ensure the cards stretch to fill the grid */
+.py-12 article {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255,255,255,0.05); /* Subtle card background */
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Fix image height in the card */
+.py-12 article img {
+    height: 200px !important;
+    width: 100% !important;
+    object-fit: cover !important;
+}
