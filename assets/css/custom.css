@@ -66,3 +66,13 @@ body { background-color: transparent !important; }
     background-color: #f0f0f0 !important;
     box-shadow: 10px 10px 0px #000000 !important;
 }
+
+/* SAFEGUARD: Ensure Gallery Images are always visible */
+.card img, 
+.article-header img,
+.featured-image img {
+    opacity: 1 !important;
+    display: block !important;
+    filter: none !important;
+    visibility: visible !important;
+}
