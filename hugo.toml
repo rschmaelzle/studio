@@ -22,7 +22,7 @@ enableRobotsTXT = true
     layout = "basic"
 
   [params.list]
-    showHero = false
+    showHero = true
     showSummary = true
     showTableOfContents = false
     showBreadcrumbs = true
