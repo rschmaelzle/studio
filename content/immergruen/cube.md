@@ -1,5 +1,5 @@
 ---
-title: "Exhibit A: The Cube"
+title: "The Cube - Simple Demo"
 date: 2024-03-01
 summary: "First contact with A-Frame. A study in primitive shapes and motion."
 tags: ["WebXR", "Prototype"]

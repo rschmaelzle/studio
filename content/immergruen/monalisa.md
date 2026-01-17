@@ -1,7 +1,7 @@
 ---
-title: "Exhibit B: The Icebreaker"
+title: "Mona L et al."
 date: 2025-06-15
-summary: "A study in social presence. Featuring the Gemini Icebreaker avatar and a floating gallery."
+summary: "A study in presence. Featuring the Gemini Icebreaker avatar and a floating gallery."
 tags: ["WebXR", "XR Blocks", "Gemini"]
 featuredImage: "https://images.unsplash.com/photo-1617791160505-6f00504e3519?q=80&w=1000&auto=format&fit=crop"
 ---
