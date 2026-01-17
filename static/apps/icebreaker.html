@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Mona L. Icebreaker</title>
+    <title>Exhibit B: The Icebreaker</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <style>
@@ -9,18 +9,17 @@
         #info { position: absolute; bottom: 20px; left: 20px; color: white; opacity: 0.7; pointer-events: none; }
     </style>
     
-	
-   <script type="importmap">
-   {
-       "imports": {
-           "three": "data:text/javascript;charset=utf-8,export * from 'https://cdn.jsdelivr.net/npm/three@0.174.0/build/three.module.js'; export { Timer } from 'https://cdn.jsdelivr.net/npm/three@0.174.0/examples/jsm/misc/Timer.js';",
-           "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.174.0/examples/jsm/",
-           "xrblocks": "https://cdn.jsdelivr.net/gh/google/xrblocks@build/xrblocks.js"
-       }
-   }
-   </script>
-	
-
+    <!-- Updated Import Map: Uses Three.js 0.182.0 (contains Timer) and XR Blocks Build -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.182.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.182.0/examples/jsm/",
+            "xrblocks": "https://cdn.jsdelivr.net/gh/google/xrblocks@build/xrblocks.js",
+            "xrblocks/addons/": "https://cdn.jsdelivr.net/gh/google/xrblocks@build/addons/"
+        }
+    }
+    </script>
 </head>
 <body>
 
@@ -32,9 +31,15 @@
     <script type="module">
         import * as THREE from 'three';
         import * as xb from 'xrblocks';
+        
+        // Use GLTFLoader from addons
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-        // 1. Define our custom Icebreaker Script
-        class IcebreakerScene extends xb.App {
+        // CHANGED: Extend xb.Script instead of xb.App
+        class IcebreakerScene extends xb.Script {
+            
+            // Note: In newer XR Blocks, use 'create' or 'init' depending on version. 
+            // We use standard initialization logic here.
             async init() {
                 // Setup lights for a gallery feel
                 const ambient = new THREE.HemisphereLight(0xffffff, 0x444444, 2);
@@ -45,8 +50,7 @@
                 this.add(spot);
 
                 // 2. Load the "Icebreaker" Model
-                // We use a high-quality robot avatar to represent the Gemini agent
-                const gltfLoader = new THREE.GLTFLoader();
+                const gltfLoader = new GLTFLoader();
                 const modelUrl = 'https://modelviewer.dev/shared-assets/models/RobotExpressive.glb';
                 
                 try {
@@ -56,10 +60,9 @@
                     model.scale.set(0.5, 0.5, 0.5);
                     this.add(model);
 
-                    // Add a simple idle animation if available
+                    // Animation Mixer
                     if (gltf.animations.length > 0) {
                         this.mixer = new THREE.AnimationMixer(model);
-                        // Play the 'Idle' or 'Wave' animation
                         const action = this.mixer.clipAction(gltf.animations[0]); 
                         action.play();
                     }
@@ -67,16 +70,16 @@
                     console.error("Could not load model:", e);
                 }
 
-                // 3. Create Floating Artworks (The "Mona Lisa" Effect)
+                // 3. Create Floating Artworks
                 const artUrls = [
-                    'https://images.unsplash.com/photo-1579783902614-a3fb39279c23?auto=format&fit=crop&w=600&q=80', // Abstract
-                    'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?auto=format&fit=crop&w=600&q=80', // Texture
-                    'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80'  // Oil Paint
+                    'https://images.unsplash.com/photo-1579783902614-a3fb39279c23?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80'
                 ];
 
                 artUrls.forEach((url, i) => {
                     const texture = new THREE.TextureLoader().load(url);
-                    const geometry = new THREE.PlaneGeometry(1, 1.4); // Portrait aspect
+                    const geometry = new THREE.PlaneGeometry(1, 1.4);
                     const material = new THREE.MeshBasicMaterial({ 
                         map: texture, 
                         side: THREE.DoubleSide,
@@ -86,19 +89,18 @@
                     
                     const artPanel = new THREE.Mesh(geometry, material);
                     
-                    // Position them in a semi-circle around the user
-                    const angle = (i - 1) * 0.8; // Spread angles: -0.8, 0, +0.8
+                    // Semi-circle arrangement
+                    const angle = (i - 1) * 0.8; 
                     const radius = 2.5;
                     
                     artPanel.position.set(
                         Math.sin(angle) * radius, 
-                        0.5 + (Math.sin(i * 2) * 0.2), // Slight height variation
+                        0.5 + (Math.sin(i * 2) * 0.2), 
                         Math.cos(angle) * -radius - 1
                     );
                     
-                    artPanel.lookAt(0, 0, 0); // Face the user
+                    artPanel.lookAt(0, 0, 0); 
                     
-                    // Add a slow "floating" animation property we can use in tick()
                     artPanel.userData = { 
                         initialY: artPanel.position.y, 
                         speed: 0.001 + (i * 0.0005),
@@ -112,20 +114,7 @@
             }
 
             tick(time, delta) {
-                // Update animations
                 if (this.mixer) this.mixer.update(delta);
-
-                // Animate floating art
                 if (this.artPanels) {
                     this.artPanels.forEach(panel => {
-                        panel.position.y = panel.userData.initialY + Math.sin(time * 0.001 + panel.userData.offset) * 0.1;
-                    });
-                }
-            }
-        }
-
-        // Start the XR Blocks App
-        new IcebreakerScene().start();
-    </script>
-</body>
-</html>
+                        panel.position.y = panel.userData.initialY + Math.sin(time * 0.001 + panel.userData.offs
