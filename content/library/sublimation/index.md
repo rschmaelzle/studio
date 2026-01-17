@@ -1,6 +1,6 @@
 ---
 title: "Sublimation and Punishment"
-date: 2024-05-21
+date: 2026-01-10
 summary: "A noir mystery aboard the SS Alma Mater, where tenure is life and physics is the only law."
 tags: ["Fiction", "Sci-Fi", "Noir"]
 layout: "article"

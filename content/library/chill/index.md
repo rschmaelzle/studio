@@ -1,6 +1,6 @@
 ---
 title: "The Big Chill"
-date: 2024-05-28
+date: 2026-01-17
 summary: "When a fraternity brother vanishes, Ray Harlow discovers an exchange program that trades failing students for nuclear fuel."
 tags: ["Fiction", "Sci-Fi", "Noir"]
 layout: "article"
