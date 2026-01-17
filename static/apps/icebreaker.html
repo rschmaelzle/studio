@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <style>
         body { margin: 0; background-color: #111; overflow: hidden; font-family: sans-serif; }
-        #info { position: absolute; bottom: 20px; left: 20px; color: white; opacity: 0.7; pointer-events: none; }
+        #info { position: absolute; bottom: 20px; left: 20px; color: white; opacity: 0.7; pointer-events: none; z-index: 999; }
     </style>
     
-    <!-- Updated Import Map: Uses Three.js 0.182.0 (contains Timer) and XR Blocks Build -->
+    <!-- Import Map: Using Three.js 0.182.0 (compatible with XR Blocks) -->
     <script type="importmap">
     {
         "imports": {
@@ -31,90 +31,97 @@
     <script type="module">
         import * as THREE from 'three';
         import * as xb from 'xrblocks';
-        
-        // Use GLTFLoader from addons
         import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-        // CHANGED: Extend xb.Script instead of xb.App
+        // 1. Define the Experience
         class IcebreakerScene extends xb.Script {
             
-            // Note: In newer XR Blocks, use 'create' or 'init' depending on version. 
-            // We use standard initialization logic here.
             async init() {
-                // Setup lights for a gallery feel
-                const ambient = new THREE.HemisphereLight(0xffffff, 0x444444, 2);
-                this.add(ambient);
+                console.log("Exhibit B: Initializing...");
                 
-                const spot = new THREE.SpotLight(0xffaa00, 10);
-                spot.position.set(2, 5, 2);
-                this.add(spot);
+                // Add Lights
+                const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 3);
+                this.add(hemiLight);
+                
+                const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+                dirLight.position.set(0, 5, 5);
+                this.add(dirLight);
 
-                // 2. Load the "Icebreaker" Model
-                const gltfLoader = new GLTFLoader();
+                // Load Robot Model
+                const loader = new GLTFLoader();
                 const modelUrl = 'https://modelviewer.dev/shared-assets/models/RobotExpressive.glb';
                 
-                try {
-                    const gltf = await gltfLoader.loadAsync(modelUrl);
+                loader.load(modelUrl, (gltf) => {
+                    console.log("Exhibit B: Model Loaded");
                     const model = gltf.scene;
-                    model.position.set(0, -1, -2); // Stand in front of user
+                    model.position.set(0, -1, -2);
                     model.scale.set(0.5, 0.5, 0.5);
                     this.add(model);
 
-                    // Animation Mixer
                     if (gltf.animations.length > 0) {
                         this.mixer = new THREE.AnimationMixer(model);
-                        const action = this.mixer.clipAction(gltf.animations[0]); 
-                        action.play();
+                        this.mixer.clipAction(gltf.animations[0]).play();
                     }
-                } catch (e) {
-                    console.error("Could not load model:", e);
-                }
+                });
 
-                // 3. Create Floating Artworks
+                // Create Floating Art Gallery
+                this.createGallery();
+            }
+
+            createGallery() {
                 const artUrls = [
                     'https://images.unsplash.com/photo-1579783902614-a3fb39279c23?auto=format&fit=crop&w=600&q=80',
                     'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?auto=format&fit=crop&w=600&q=80',
                     'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80'
                 ];
 
+                this.artPanels = [];
+                const loader = new THREE.TextureLoader();
+
                 artUrls.forEach((url, i) => {
-                    const texture = new THREE.TextureLoader().load(url);
-                    const geometry = new THREE.PlaneGeometry(1, 1.4);
-                    const material = new THREE.MeshBasicMaterial({ 
-                        map: texture, 
-                        side: THREE.DoubleSide,
-                        transparent: true,
-                        opacity: 0.9
+                    loader.load(url, (texture) => {
+                        const geometry = new THREE.PlaneGeometry(1, 1.4);
+                        const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+                        const panel = new THREE.Mesh(geometry, material);
+
+                        // Position: Semi-circle
+                        const angle = (i - 1) * 0.8;
+                        const radius = 2.5;
+                        
+                        panel.position.set(Math.sin(angle) * radius, 0.5, Math.cos(angle) * -radius - 1);
+                        panel.lookAt(0, 0, 0);
+                        
+                        // Custom data for animation
+                        panel.userData = { 
+                            yStart: panel.position.y, 
+                            speed: 0.001 + (i * 0.0005), 
+                            offset: i * 10 
+                        };
+
+                        this.artPanels.push(panel);
+                        this.add(panel);
                     });
-                    
-                    const artPanel = new THREE.Mesh(geometry, material);
-                    
-                    // Semi-circle arrangement
-                    const angle = (i - 1) * 0.8; 
-                    const radius = 2.5;
-                    
-                    artPanel.position.set(
-                        Math.sin(angle) * radius, 
-                        0.5 + (Math.sin(i * 2) * 0.2), 
-                        Math.cos(angle) * -radius - 1
-                    );
-                    
-                    artPanel.lookAt(0, 0, 0); 
-                    
-                    artPanel.userData = { 
-                        initialY: artPanel.position.y, 
-                        speed: 0.001 + (i * 0.0005),
-                        offset: i * 10
-                    };
-                    
-                    this.artPanels = this.artPanels || [];
-                    this.artPanels.push(artPanel);
-                    this.add(artPanel);
                 });
             }
 
             tick(time, delta) {
+                // Update Robot Animation
                 if (this.mixer) this.mixer.update(delta);
+
+                // Update Floating Art (Bobbing Effect)
                 if (this.artPanels) {
                     this.artPanels.forEach(panel => {
-                        panel.position.y = panel.userData.initialY + Math.sin(time * 0.001 + panel.userData.offs
+                        panel.position.y = panel.userData.yStart + Math.sin(time * 0.001 + panel.userData.offset) * 0.1;
+                    });
+                }
+            }
+        }
+
+        // 2. Register and Start the Engine
+        // This was the missing step: We must add the script to 'xb' and then call init()
+        xb.add(new IcebreakerScene());
+        xb.init(); 
+
+    </script>
+</body>
+</html>
