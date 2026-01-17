@@ -1,6 +1,6 @@
 ---
 title: "The Cube - Simple Demo"
-date: 2024-03-01
+date: 2025-12-30
 summary: "First contact with A-Frame. A study in primitive shapes and motion."
 tags: ["WebXR", "Prototype"]
 featuredImage: "https://images.unsplash.com/photo-1506318137071-a8bcbf675b27?q=80&w=1000&auto=format&fit=crop"
