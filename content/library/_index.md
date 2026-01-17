@@ -10,4 +10,4 @@ cascade:
   invertPagination: true
 ---
 
-A collection of short stories.
+**The Library** is a collection of short stories and books I want to remember.
