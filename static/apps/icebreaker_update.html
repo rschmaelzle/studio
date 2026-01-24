@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Exhibit B: Floating Gallery</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <style>
+        body { margin: 0; background-color: #000; overflow: hidden; font-family: sans-serif; }
+        #info { position: absolute; bottom: 20px; left: 20px; color: white; opacity: 0.8; pointer-events: none; z-index: 999; }
+    </style>
+    
+    <!-- Import Map -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.182.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.182.0/examples/jsm/",
+            "xrblocks": "https://cdn.jsdelivr.net/gh/google/xrblocks@build/xrblocks.js",
+            "xrblocks/addons/": "https://cdn.jsdelivr.net/gh/google/xrblocks@build/addons/"
+        }
+    }
+    </script>
+</head>
+<body>
+
+    <div id="info">
+        <h3>Exhibit B: Mixed Reality</h3>
+        <p>Desktop: Blue World • Phone (AR): Real World + Floating Art</p>
+    </div>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import * as xb from 'xrblocks';
+
+        class FloatingGallery extends xb.Script {
+            
+            async init() {
+                console.log("Gallery: Initializing...");
+
+                // 1. Lighting (Simple setup)
+                const light = new THREE.DirectionalLight(0xffffff, 2);
+                light.position.set(0, 2, 2);
+                this.add(light);
+                this.add(new THREE.AmbientLight(0xffffff, 1));
+
+                // 2. Create the "Blueish Sphere" Environment
+                // We make it 'BackSide' so we see the inside of the sphere
+                const bgGeo = new THREE.SphereGeometry(10, 32, 32);
+                const bgMat = new THREE.MeshBasicMaterial({ 
+                    color: 0x112244, // Dark Blueish
+                    side: THREE.BackSide 
+                });
+                this.bgSphere = new THREE.Mesh(bgGeo, bgMat);
+                this.add(this.bgSphere);
+
+                // 3. Create the Floating Images (Only 2)
+                this.createGallery();
+            }
+
+            createGallery() {
+                // Using reliable placeholder images to ensure they load
+                const artUrls = [
+                    'https://images.unsplash.com/photo-1579783902614-a3fb39279c23?auto=format&fit=crop&w=600&q=80', // Abstract Blue
+                    'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80'  // Abstract Orange/Fluid
+                ];
+
+                this.artPanels = [];
+                const loader = new THREE.TextureLoader();
+
+                artUrls.forEach((url, i) => {
+                    loader.load(url, (texture) => {
+                        // Make panel geometry
+                        const geometry = new THREE.PlaneGeometry(1, 1.4);
+                        const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+                        const panel = new THREE.Mesh(geometry, material);
+
+                        // Position: Left and Right of center
+                        // i=0 goes left (-1.2), i=1 goes right (1.2)
+                        const xPos = (i === 0) ? -0.8 : 0.8;
+                        
+                        panel.position.set(xPos, 1.3, -1.5); // 1.3m high (eye levelish), 1.5m away
+                        panel.lookAt(0, 1.3, 0); // Look at user
+                        
+                        // Custom data for animation
+                        panel.userData = { 
+                            yStart: panel.position.y, 
+                            offset: i * 20 
+                        };
+
+                        this.artPanels.push(panel);
+                        this.add(panel);
+                    });
+                });
+            }
+
+            tick(time, delta) {
+                // 1. ANIMATION: Floating Effect
+                if (this.artPanels) {
+                    this.artPanels.forEach(panel => {
+                        panel.position.y = panel.userData.yStart + Math.sin(time * 0.001 + panel.userData.offset) * 0.05;
+                    });
+                }
+
+                // 2. MIXED REALITY LOGIC
+                // Check if the renderer is currently presenting in XR
+                const isXR = xb.renderer.xr.isPresenting;
+                
+                if (isXR) {
+                    // If we are in AR/VR, hide the blue sphere so we see the camera feed (Pass-through)
+                    if (this.bgSphere.visible) this.bgSphere.visible = false;
+                } else {
+                    // If we are on desktop/mobile non-XR, show the blue sphere
+                    if (!this.bgSphere.visible) this.bgSphere.visible = true;
+                }
+            }
+        }
+
+        // Register and Start
+        xb.add(new FloatingGallery());
+        xb.init(); 
+
+    </script>
+</body>
+</html>
