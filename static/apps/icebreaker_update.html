@@ -5,25 +5,21 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     
-    <!-- 1. CRITICAL: This CSS makes the 'Enter XR' button visible and styled -->
-    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/google/xrblocks@build/samples/main.css" />
+    <!-- CRITICAL FIX: Use the 'main' branch for CSS so the 'Enter AR' button appears -->
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/google/xrblocks@main/samples/main.css" />
 
     <style>
-        /* Simple styling for the overlay info text */
+        /* Optional: Custom styling for your info text */
         #info {
             position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 20px;
+            width: 100%;
+            text-align: center;
             color: white;
-            opacity: 0.8;
             pointer-events: none;
             z-index: 999;
-            text-align: center;
             font-family: sans-serif;
-            background: rgba(0,0,0,0.5);
-            padding: 10px;
-            border-radius: 8px;
+            text-shadow: 1px 1px 2px black;
         }
     </style>
     
@@ -41,96 +37,93 @@
 <body>
 
     <div id="info">
-        <h3>Exhibit B: Mixed Reality</h3>
-        <p>Enter AR to see the art float in your room</p>
+        <h3>Floating Gallery</h3>
+        <p>Press "Enter AR" below to view in your room</p>
     </div>
 
     <script type="module">
         import * as THREE from 'three';
         import * as xb from 'xrblocks';
 
-        class FloatingGallery extends xb.Script {
+        class GalleryScene extends xb.Script {
             
             async init() {
-                // 1. Setup Environment
-                // Desktop: Blue sphere. Mobile AR: Passthrough (Camera).
-                this.setupEnvironment();
-
-                // 2. Setup Gallery
-                // We use reliable placeholder images.
-                this.createGallery();
-            }
-
-            setupEnvironment() {
-                // Lights
-                const dirLight = new THREE.DirectionalLight(0xffffff, 2);
-                dirLight.position.set(0, 5, 5);
-                this.add(dirLight);
+                // 1. Add Lights
+                const light = new THREE.DirectionalLight(0xffffff, 3);
+                light.position.set(0, 5, 5);
+                this.add(light);
                 this.add(new THREE.AmbientLight(0xffffff, 1));
 
-                // Blue Background Sphere (Visible ONLY on Desktop/VR)
-                // We will hide this in AR so you see the real world.
+                // 2. Create Background (Blue Sphere)
+                // We keep a reference to this so we can hide it in AR
                 const bgGeo = new THREE.SphereGeometry(10, 32, 32);
                 const bgMat = new THREE.MeshBasicMaterial({ 
-                    color: 0x112244, 
+                    color: 0x224488, 
                     side: THREE.BackSide 
                 });
                 this.bgSphere = new THREE.Mesh(bgGeo, bgMat);
                 this.add(this.bgSphere);
+
+                // 3. Create Art Panels
+                this.createArt();
             }
 
-            createGallery() {
-                const artUrls = [
-                    'https://images.unsplash.com/photo-1579783902614-a3fb39279c23?auto=format&fit=crop&w=600&q=80', // Blue Abstract
-                    'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80'  // Orange Fluid
+            createArt() {
+                // Using generated placeholder images to guarantee they load
+                const imageUrls = [
+                    'https://placehold.co/600x800/orange/white.png?text=Art+1',
+                    'https://placehold.co/600x800/purple/white.png?text=Art+2'
                 ];
 
-                this.artPanels = [];
+                this.panels = [];
                 const loader = new THREE.TextureLoader();
 
-                artUrls.forEach((url, i) => {
+                imageUrls.forEach((url, index) => {
                     loader.load(url, (texture) => {
-                        const geometry = new THREE.PlaneGeometry(1, 1.4);
-                        const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+                        const geometry = new THREE.PlaneGeometry(0.6, 0.8);
+                        const material = new THREE.MeshStandardMaterial({ map: texture, side: THREE.DoubleSide });
                         const panel = new THREE.Mesh(geometry, material);
 
-                        // Position left (-1) and right (+1)
-                        const xPos = (i === 0) ? -0.8 : 0.8;
-                        panel.position.set(xPos, 1.5, -2); // 1.5m high, 2m away
-                        panel.lookAt(0, 1.5, 0);
+                        // Position them roughly at eye level (1.5m)
+                        // One slightly left, one slightly right
+                        const xPos = index === 0 ? -0.5 : 0.5;
+                        panel.position.set(xPos, 1.5, -1.5);
+                        
+                        // Slightly rotate them to face center
+                        panel.rotation.y = index === 0 ? 0.2 : -0.2;
 
-                        // Animation Data
-                        panel.userData = { 
-                            yStart: 1.5, 
-                            offset: i * 100 
-                        };
-
-                        this.artPanels.push(panel);
+                        // Save initial Y for animation
+                        panel.userData = { startY: 1.5, offset: index * 10 };
+                        
+                        this.panels.push(panel);
                         this.add(panel);
                     });
                 });
             }
 
             tick(time, delta) {
-                // 1. Floating Animation
-                if (this.artPanels) {
-                    this.artPanels.forEach(panel => {
-                        panel.position.y = panel.userData.yStart + Math.sin(time * 0.001 + panel.userData.offset) * 0.05;
+                // 1. Animate Panels (Gentle bobbing)
+                if (this.panels) {
+                    this.panels.forEach(panel => {
+                        panel.position.y = panel.userData.startY + Math.sin(time * 0.002 + panel.userData.offset) * 0.05;
                     });
                 }
 
-                // 2. AR Passthrough Logic
-                // If we are in AR, hide the blue sphere. If on desktop, show it.
-                if (this.bgSphere) {
-                    const isAR = xb.renderer.xr.isPresenting;
-                    this.bgSphere.visible = !isAR; 
+                // 2. AR Logic: Hide Blue Sphere if in AR
+                // xb.renderer.xr.isPresenting returns true if we are in AR/VR
+                if (xb.renderer.xr.isPresenting) {
+                    this.bgSphere.visible = false;
+                } else {
+                    this.bgSphere.visible = true;
                 }
             }
         }
 
         // Initialize XR Blocks
-        xb.add(new FloatingGallery());
-        xb.init(); 
+        document.addEventListener('DOMContentLoaded', function () {
+            xb.add(new GalleryScene());
+            xb.init(new xb.Options()); // This triggers the button creation
+        });
 
     </script>
 </body>
