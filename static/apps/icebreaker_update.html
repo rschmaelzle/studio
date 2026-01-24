@@ -61,7 +61,8 @@
 
                 // 2. Load the Model (Robot)
                 const loader = new GLTFLoader();
-                const modelUrl = 'https://modelviewer.dev/shared-assets/models/RobotExpressive.glb';
+                //const modelUrl = 'https://modelviewer.dev/shared-assets/models/RobotExpressive.glb';
+				const modelUrl = 'speaker.glb';
 
                 loader.load(modelUrl, (gltf) => {
                     this.model = gltf.scene;
