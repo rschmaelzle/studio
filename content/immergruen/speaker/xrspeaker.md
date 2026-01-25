@@ -3,7 +3,7 @@ title: "Major Tom"
 date: 2026-01-24
 summary: "A speaker floating in space."
 tags: ["WebXR", "XR Blocks", "Gemini"]
-featuredImage: "https://images.unsplash.com/photo-1617791160505-6f00504e3519?q=80&w=1000&auto=format&fit=crop"
+featuredImage: "coverB.jpg"
 ---
 
 Major Tom is a public speaker addressing us from the void, floating in space like in the famous song.

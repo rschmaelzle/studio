@@ -1,24 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>FBX Model Viewer</title>
+    <title>FBX Viewer (Material Fix)</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-    
     <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/google/xrblocks@main/samples/main.css" />
-    
     <style>
         body { margin: 0; background-color: #333; overflow: hidden; font-family: sans-serif; }
-        #info { 
-            position: absolute; 
-            top: 20px; 
-            width: 100%; 
-            text-align: center; 
-            color: white; 
-            pointer-events: none; 
-            z-index: 999; 
-            text-shadow: 1px 1px 2px black; 
-        }
+        #info { position: absolute; top: 20px; width: 100%; text-align: center; color: white; pointer-events: none; z-index: 999; text-shadow: 1px 1px 2px black; }
     </style>
     
     <script type="importmap">
@@ -53,7 +42,6 @@
                 const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 3);
                 hemiLight.position.set(0, 20, 0);
                 this.add(hemiLight);
-                
                 const dirLight = new THREE.DirectionalLight(0xffffff, 3);
                 dirLight.position.set(3, 10, 10);
                 this.add(dirLight);
@@ -62,22 +50,27 @@
                 const loader = new FBXLoader();
                 const modelUrl = 'speaker.fbx'; 
 
-                console.log("Starting load for: " + modelUrl);
-
                 loader.load(modelUrl, (fbx) => {
-                    console.log("FBX Loaded.");
+                    console.log("FBX Loaded. Applying Material Fix...");
                     this.model = fbx;
 
-                    // ----------------------------------------------------
-                    // CRITICAL FIX: ENABLE SKINNING MANUALLY
-                    // ----------------------------------------------------
+                    // -----------------------------------------------------------
+                    // FIX: REPLACE BROKEN MATERIALS
+                    // -----------------------------------------------------------
                     this.model.traverse((child) => {
                         if (child.isMesh) {
-                            // Because of the 'unknown material' error, 
-                            // we must ensure skinning is true.
-                            if (child.material) {
-                                child.material.skinning = true;
-                            }
+                            // 1. Check if we need to preserve the texture
+                            const oldMap = child.material.map;
+                            
+                            // 2. Create a fresh Standard Material
+                            // This ensures 'skinning' works correctly
+                            const newMat = new THREE.MeshStandardMaterial({
+                                map: oldMap, // Keep the texture if it exists
+                                color: 0xffffff,
+                                skinning: true // <--- CRITICAL: ENABLE BONES
+                            });
+
+                            child.material = newMat;
                         }
                     });
 
@@ -86,31 +79,28 @@
                     this.model.position.set(0, -1, -2);
                     this.add(this.model);
 
-                    // Animation Logic
+                    // Animation
                     if (fbx.animations && fbx.animations.length > 0) {
-                        const clip = fbx.animations[0];
-                        console.log(`Playing Animation: "${clip.name}" (Duration: ${clip.duration}s)`);
-                        
-                        // If duration is 0, the animation file is empty/broken
-                        if(clip.duration === 0) {
-                            console.error("WARNING: Animation exists but duration is 0!");
-                        }
-
                         this.mixer = new THREE.AnimationMixer(this.model);
-                        const action = this.mixer.clipAction(clip);
-                        action.play();
+                        
+                        // Play ALL animations found (just in case index 0 is empty)
+                        fbx.animations.forEach((clip) => {
+                            console.log(`Playing: ${clip.name}`);
+                            const action = this.mixer.clipAction(clip);
+                            action.play();
+                        });
                     } else {
                         console.warn("No animations found.");
                     }
                 }, 
-                (xhr) => { /* progress */ },
-                (error) => { console.error('Error:', error); });
+                (xhr) => { console.log((xhr.loaded / xhr.total * 100) + '% loaded'); },
+                (error) => { console.error(error); });
             }
 
             tick() {
+                // Update animation mixer with correct time delta
                 if (this.mixer) {
-                    const dt = this.clock.getDelta();
-                    this.mixer.update(dt);
+                    this.mixer.update(this.clock.getDelta());
                 }
             }
         }
