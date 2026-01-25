@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>FBX Model Viewer</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/google/xrblocks@main/samples/main.css" />
+    <style>
+        body { margin: 0; background-color: #333; overflow: hidden; font-family: sans-serif; }
+        #info { position: absolute; top: 20px; width: 100%; text-align: center; color: white; pointer-events: none; z-index: 999; text-shadow: 1px 1px 2px black; }
+    </style>
+    
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.182.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.182.0/examples/jsm/",
+            "xrblocks": "https://cdn.jsdelivr.net/gh/google/xrblocks@build/xrblocks.js",
+            "xrblocks/addons/": "https://cdn.jsdelivr.net/gh/google/xrblocks@build/addons/"
+        }
+    }
+    </script>
+</head>
+<body>
+
+    <div id="info">
+        <h3>FBX Viewer</h3>
+        <p>Press "Enter AR"</p>
+    </div>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import * as xb from 'xrblocks';
+        // 1. CHANGE IMPORT: Use FBXLoader instead of GLTFLoader
+        import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
+
+        class FBXViewer extends xb.Script {
+            
+            async init() {
+                // Lights
+                const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 3);
+                hemiLight.position.set(0, 20, 0);
+                this.add(hemiLight);
+                const dirLight = new THREE.DirectionalLight(0xffffff, 3);
+                dirLight.position.set(3, 10, 10);
+                this.add(dirLight);
+
+                // 2. Load FBX Model
+                const loader = new FBXLoader();
+                // REPLACE THIS with your actual FBX URL
+                const modelUrl = 'speaker.fbx'; 
+
+                loader.load(modelUrl, (fbx) => {
+                    this.model = fbx;
+
+                    // FBX models are often huge or tiny in scale. You might need to adjust this!
+                    // Try 0.01 if it's huge, or 100 if it's tiny.
+                    this.model.scale.set(0.01, 0.01, 0.01); 
+                    
+                    this.model.position.set(0, -1, -2);
+                    this.add(this.model);
+
+                    // Animation Mixer for FBX
+                    if (fbx.animations && fbx.animations.length > 0) {
+                        this.mixer = new THREE.AnimationMixer(this.model);
+                        const action = this.mixer.clipAction(fbx.animations[0]);
+                        action.play();
+                    }
+                }, 
+                // Progress callback to debug large file loading
+                (xhr) => {
+                    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+                },
+                (error) => {
+                    console.error('An error happened', error);
+                });
+            }
+
+            tick(time, delta) {
+                if (this.mixer) this.mixer.update(delta);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            xb.add(new FBXViewer());
+            xb.init(new xb.Options()); 
+        });
+
+    </script>
+</body>
+</html>
