@@ -1,18 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>FBX Diagnostic</title>
+    <title>XR Speaker</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/google/xrblocks@main/samples/main.css" />
     <style>
         body { margin: 0; background-color: #333; overflow: hidden; font-family: sans-serif; }
-        /* BLUE BOX - To prove you have the new version */
-        #info { 
-            position: absolute; top: 20px; width: 100%; text-align: center; 
-            color: white; pointer-events: none; z-index: 999; 
-            background-color: rgba(0, 0, 255, 0.5); padding: 10px;
-        }
+        #info { position: absolute; top: 20px; width: 100%; text-align: center; color: white; pointer-events: none; z-index: 999; }
     </style>
     
     <script type="importmap">
@@ -29,89 +24,62 @@
 <body>
 
     <div id="info">
-        <h3>DIAGNOSTIC MODE</h3>
-        <p>If this box is BLUE, you have the new code.</p>
+        <h3>XR Speaker</h3>
+        <p>Press "Enter AR"</p>
     </div>
 
     <script type="module">
         import * as THREE from 'three';
         import * as xb from 'xrblocks';
-        import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
+        // USE GLTF LOADER (Standard for WebXR)
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-        class FBXDiag extends xb.Script {
+        class SpeakerApp extends xb.Script {
             
             async init() {
                 this.clock = new THREE.Clock();
 
                 // Lights
-                this.add(new THREE.HemisphereLight(0xffffff, 0x444444, 3));
+                const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 3);
+                hemiLight.position.set(0, 20, 0);
+                this.add(hemiLight);
                 const dirLight = new THREE.DirectionalLight(0xffffff, 3);
                 dirLight.position.set(3, 10, 10);
                 this.add(dirLight);
 
-                // Load FBX
-                const loader = new FBXLoader();
-                const modelUrl = 'speaker.fbx'; 
+                // Load GLB (Converted file)
+                const loader = new GLTFLoader();
+                const modelUrl = 'speaker.glb'; 
 
-                loader.load(modelUrl, (fbx) => {
-                    this.model = fbx;
+                loader.load(modelUrl, (gltf) => {
+                    console.log("GLB Loaded");
+                    this.model = gltf.scene;
                     
-                    console.log("--------------------------------------");
-                    console.log("DIAGNOSTIC REPORT:");
-                    
-                    let isAnimated = false;
-
-                    // CHECK EVERY PART OF THE MODEL
-                    this.model.traverse((child) => {
-                        if (child.isMesh) {
-                            // 1. Check Object Type
-                            // If it says "Mesh", it CANNOT animate.
-                            // If it says "SkinnedMesh", it SHOULD animate.
-                            console.log(`Object Name: "${child.name}" | Type: ${child.type}`);
-                            
-                            if (child.type === 'SkinnedMesh') {
-                                isAnimated = true;
-                            }
-
-                            // 2. Fix Culling (prevents disappearing)
-                            child.frustumCulled = false;
-
-                            // 3. Material Fix (No 'skinning:true' error here!)
-                            const oldMap = child.material.map;
-                            child.material = new THREE.MeshStandardMaterial({
-                                map: oldMap,
-                                color: 0xffffff
-                            });
-                        }
-                    });
-                    
-                    console.log("Is model capable of animation? " + (isAnimated ? "YES (SkinnedMesh Found)" : "NO (Only Static Meshes Found)"));
-                    console.log("--------------------------------------");
-
-                    this.model.scale.set(0.01, 0.01, 0.01); 
-                    this.model.position.set(0, -1, -2);
-                    this.add(this.model);
-
-                    // Animation Setup
-                    if (fbx.animations && fbx.animations.length > 0) {
-                        const clip = fbx.animations[0];
-                        console.log(`Playing Clip: ${clip.name}`);
-                        
+                    // Setup Animation
+                    if (gltf.animations && gltf.animations.length > 0) {
                         this.mixer = new THREE.AnimationMixer(this.model);
-                        const action = this.mixer.clipAction(clip);
-                        action.reset();
+                        const action = this.mixer.clipAction(gltf.animations[0]);
                         action.play();
                     }
+
+                    // GLB Scale is usually consistent (1 unit = 1 meter)
+                    // You might not need 0.01 anymore. Try 1.0 first, or 0.5.
+                    this.model.scale.set(1.0, 1.0, 1.0); 
+                    this.model.position.set(0, -1, -2);
+                    
+                    this.add(this.model);
                 });
             }
 
             tick() {
-                if (this.mixer) this.mixer.update(this.clock.getDelta());
+                if (this.mixer) {
+                    this.mixer.update(this.clock.getDelta());
+                }
             }
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            xb.add(new FBXDiag());
+            xb.add(new SpeakerApp());
             xb.init(new xb.Options()); 
         });
 
