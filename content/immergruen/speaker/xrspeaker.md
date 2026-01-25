@@ -4,6 +4,7 @@ date: 2026-01-24
 summary: "A speaker floating in space."
 tags: ["WebXR", "XR Blocks", "Gemini"]
 featuredImage: "coverB.jpg"
+layout: "article"
 ---
 
 Major Tom is a public speaker addressing us from the void, floating in space like in the famous song.

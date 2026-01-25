@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>FBX Viewer (Material Fix)</title>
+    <title>FBX Viewer (Fixed)</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/google/xrblocks@main/samples/main.css" />
@@ -40,7 +40,6 @@
 
                 // Lights
                 const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 3);
-                hemiLight.position.set(0, 20, 0);
                 this.add(hemiLight);
                 const dirLight = new THREE.DirectionalLight(0xffffff, 3);
                 dirLight.position.set(3, 10, 10);
@@ -51,56 +50,61 @@
                 const modelUrl = 'speaker.fbx'; 
 
                 loader.load(modelUrl, (fbx) => {
-                    console.log("FBX Loaded. Applying Material Fix...");
+                    console.log("FBX Loaded.");
                     this.model = fbx;
 
                     // -----------------------------------------------------------
-                    // FIX: REPLACE BROKEN MATERIALS
+                    // FIX: MATERIAL & DEBUGGING
                     // -----------------------------------------------------------
                     this.model.traverse((child) => {
                         if (child.isMesh) {
-                            // 1. Check if we need to preserve the texture
-                            const oldMap = child.material.map;
-                            
-                            // 2. Create a fresh Standard Material
-                            // This ensures 'skinning' works correctly
-                            const newMat = new THREE.MeshStandardMaterial({
-                                map: oldMap, // Keep the texture if it exists
-                                color: 0xffffff,
-                                skinning: true // <--- CRITICAL: ENABLE BONES
-                            });
+                            // LOG: Is it a SkinnedMesh (Animated) or just a Mesh (Static)?
+                            console.log(`Found Object: ${child.name} | Type: ${child.type}`);
 
-                            child.material = newMat;
+                            // FIX 1: Prevent animation culling (freezing when bounding box is wrong)
+                            child.frustumCulled = false;
+
+                            // FIX 2: Replace the broken "openPBRSurface" material
+                            // We do NOT set skinning:true anymore (it's automatic)
+                            const oldMap = child.material.map;
+                            child.material = new THREE.MeshStandardMaterial({
+                                map: oldMap,
+                                color: 0xffffff,
+                                roughness: 0.5,
+                                metalness: 0.1
+                            });
                         }
                     });
 
-                    // Scale & Position
                     this.model.scale.set(0.01, 0.01, 0.01); 
                     this.model.position.set(0, -1, -2);
                     this.add(this.model);
 
                     // Animation
                     if (fbx.animations && fbx.animations.length > 0) {
-                        this.mixer = new THREE.AnimationMixer(this.model);
+                        const clip = fbx.animations[0];
+                        console.log(`Playing Animation: "${clip.name}" (Duration: ${clip.duration}s)`);
                         
-                        // Play ALL animations found (just in case index 0 is empty)
-                        fbx.animations.forEach((clip) => {
-                            console.log(`Playing: ${clip.name}`);
-                            const action = this.mixer.clipAction(clip);
-                            action.play();
-                        });
+                        this.mixer = new THREE.AnimationMixer(this.model);
+                        const action = this.mixer.clipAction(clip);
+                        
+                        // Ensure it plays and loops
+                        action.reset();
+                        action.play();
                     } else {
                         console.warn("No animations found.");
                     }
                 }, 
-                (xhr) => { console.log((xhr.loaded / xhr.total * 100) + '% loaded'); },
+                (xhr) => { 
+                    if(xhr.total > 0) console.log((xhr.loaded / xhr.total * 100) + '% loaded'); 
+                },
                 (error) => { console.error(error); });
             }
 
             tick() {
-                // Update animation mixer with correct time delta
                 if (this.mixer) {
-                    this.mixer.update(this.clock.getDelta());
+                    const dt = this.clock.getDelta();
+                    this.mixer.update(dt);
                 }
             }
         }
