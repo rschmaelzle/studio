@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>FBX Viewer (Fixed)</title>
+    <title>FBX Diagnostic</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/google/xrblocks@main/samples/main.css" />
     <style>
         body { margin: 0; background-color: #333; overflow: hidden; font-family: sans-serif; }
-        #info { position: absolute; top: 20px; width: 100%; text-align: center; color: white; pointer-events: none; z-index: 999; text-shadow: 1px 1px 2px black; }
+        /* BLUE BOX - To prove you have the new version */
+        #info { 
+            position: absolute; top: 20px; width: 100%; text-align: center; 
+            color: white; pointer-events: none; z-index: 999; 
+            background-color: rgba(0, 0, 255, 0.5); padding: 10px;
+        }
     </style>
     
     <script type="importmap">
@@ -24,8 +29,8 @@
 <body>
 
     <div id="info">
-        <h3>FBX Viewer</h3>
-        <p>Press "Enter AR"</p>
+        <h3>DIAGNOSTIC MODE</h3>
+        <p>If this box is BLUE, you have the new code.</p>
     </div>
 
     <script type="module">
@@ -33,14 +38,13 @@
         import * as xb from 'xrblocks';
         import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
-        class FBXViewer extends xb.Script {
+        class FBXDiag extends xb.Script {
             
             async init() {
                 this.clock = new THREE.Clock();
 
                 // Lights
-                const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 3);
-                this.add(hemiLight);
+                this.add(new THREE.HemisphereLight(0xffffff, 0x444444, 3));
                 const dirLight = new THREE.DirectionalLight(0xffffff, 3);
                 dirLight.position.set(3, 10, 10);
                 this.add(dirLight);
@@ -50,67 +54,64 @@
                 const modelUrl = 'speaker.fbx'; 
 
                 loader.load(modelUrl, (fbx) => {
-                    console.log("FBX Loaded.");
                     this.model = fbx;
+                    
+                    console.log("--------------------------------------");
+                    console.log("DIAGNOSTIC REPORT:");
+                    
+                    let isAnimated = false;
 
-                    // -----------------------------------------------------------
-                    // FIX: MATERIAL & DEBUGGING
-                    // -----------------------------------------------------------
+                    // CHECK EVERY PART OF THE MODEL
                     this.model.traverse((child) => {
                         if (child.isMesh) {
-                            // LOG: Is it a SkinnedMesh (Animated) or just a Mesh (Static)?
-                            console.log(`Found Object: ${child.name} | Type: ${child.type}`);
+                            // 1. Check Object Type
+                            // If it says "Mesh", it CANNOT animate.
+                            // If it says "SkinnedMesh", it SHOULD animate.
+                            console.log(`Object Name: "${child.name}" | Type: ${child.type}`);
+                            
+                            if (child.type === 'SkinnedMesh') {
+                                isAnimated = true;
+                            }
 
-                            // FIX 1: Prevent animation culling (freezing when bounding box is wrong)
+                            // 2. Fix Culling (prevents disappearing)
                             child.frustumCulled = false;
 
-                            // FIX 2: Replace the broken "openPBRSurface" material
-                            // We do NOT set skinning:true anymore (it's automatic)
+                            // 3. Material Fix (No 'skinning:true' error here!)
                             const oldMap = child.material.map;
                             child.material = new THREE.MeshStandardMaterial({
                                 map: oldMap,
-                                color: 0xffffff,
-                                roughness: 0.5,
-                                metalness: 0.1
+                                color: 0xffffff
                             });
                         }
                     });
+                    
+                    console.log("Is model capable of animation? " + (isAnimated ? "YES (SkinnedMesh Found)" : "NO (Only Static Meshes Found)"));
+                    console.log("--------------------------------------");
 
                     this.model.scale.set(0.01, 0.01, 0.01); 
                     this.model.position.set(0, -1, -2);
                     this.add(this.model);
 
-                    // Animation
+                    // Animation Setup
                     if (fbx.animations && fbx.animations.length > 0) {
                         const clip = fbx.animations[0];
-                        console.log(`Playing Animation: "${clip.name}" (Duration: ${clip.duration}s)`);
+                        console.log(`Playing Clip: ${clip.name}`);
                         
                         this.mixer = new THREE.AnimationMixer(this.model);
                         const action = this.mixer.clipAction(clip);
-                        
-                        // Ensure it plays and loops
                         action.reset();
                         action.play();
-                    } else {
-                        console.warn("No animations found.");
                     }
-                }, 
-                (xhr) => { 
-                    if(xhr.total > 0) console.log((xhr.loaded / xhr.total * 100) + '% loaded'); 
-                },
-                (error) => { console.error(error); });
+                });
             }
 
             tick() {
-                if (this.mixer) {
-                    const dt = this.clock.getDelta();
-                    this.mixer.update(dt);
-                }
+                if (this.mixer) this.mixer.update(this.clock.getDelta());
             }
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            xb.add(new FBXViewer());
+            xb.add(new FBXDiag());
             xb.init(new xb.Options()); 
         });
 
