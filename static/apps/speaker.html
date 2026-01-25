@@ -4,10 +4,22 @@
     <title>FBX Model Viewer</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    
+    <!-- CSS for the 'Enter AR' button -->
     <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/google/xrblocks@main/samples/main.css" />
+    
     <style>
         body { margin: 0; background-color: #333; overflow: hidden; font-family: sans-serif; }
-        #info { position: absolute; top: 20px; width: 100%; text-align: center; color: white; pointer-events: none; z-index: 999; text-shadow: 1px 1px 2px black; }
+        #info { 
+            position: absolute; 
+            top: 20px; 
+            width: 100%; 
+            text-align: center; 
+            color: white; 
+            pointer-events: none; 
+            z-index: 999; 
+            text-shadow: 1px 1px 2px black; 
+        }
     </style>
     
     <script type="importmap">
@@ -31,53 +43,73 @@
     <script type="module">
         import * as THREE from 'three';
         import * as xb from 'xrblocks';
-        // 1. CHANGE IMPORT: Use FBXLoader instead of GLTFLoader
         import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
         class FBXViewer extends xb.Script {
             
             async init() {
-                // Lights
+                // 1. FIX: Initialize a Clock for accurate animation timing
+                this.clock = new THREE.Clock();
+
+                // 2. Lights
                 const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 3);
                 hemiLight.position.set(0, 20, 0);
                 this.add(hemiLight);
+                
                 const dirLight = new THREE.DirectionalLight(0xffffff, 3);
                 dirLight.position.set(3, 10, 10);
                 this.add(dirLight);
 
-                // 2. Load FBX Model
+                // 3. Load FBX Model
                 const loader = new FBXLoader();
-                // REPLACE THIS with your actual FBX URL
-                const modelUrl = 'speaker.fbx'; 
+                const modelUrl = 'speaker.fbx'; // Your file
+
+                console.log("Starting load for: " + modelUrl);
 
                 loader.load(modelUrl, (fbx) => {
+                    console.log("FBX Loaded successfully");
                     this.model = fbx;
 
-                    // FBX models are often huge or tiny in scale. You might need to adjust this!
-                    // Try 0.01 if it's huge, or 100 if it's tiny.
+                    // Scale: Adjust this if model is too big/small (Try 0.01 or 1.0)
                     this.model.scale.set(0.01, 0.01, 0.01); 
                     
+                    // Position: On the floor, 2m in front
                     this.model.position.set(0, -1, -2);
+                    
                     this.add(this.model);
 
-                    // Animation Mixer for FBX
+                    // 4. Animation Logic
                     if (fbx.animations && fbx.animations.length > 0) {
+                        console.log(`Found ${fbx.animations.length} animations`);
+                        
                         this.mixer = new THREE.AnimationMixer(this.model);
+                        
+                        // Play the first animation found
                         const action = this.mixer.clipAction(fbx.animations[0]);
                         action.play();
+                    } else {
+                        console.warn("No animations found in this FBX file.");
                     }
                 }, 
-                // Progress callback to debug large file loading
+                // Progress
                 (xhr) => {
-                    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+                    if (xhr.total > 0) {
+                        console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+                    }
                 },
+                // Error
                 (error) => {
-                    console.error('An error happened', error);
+                    console.error('An error happened loading the FBX:', error);
                 });
             }
 
-            tick(time, delta) {
-                if (this.mixer) this.mixer.update(delta);
+            tick() {
+                // 5. FIX: Use the clock's delta for smooth updates
+                // We ignore the arguments passed by tick() to be safe
+                if (this.mixer) {
+                    const dt = this.clock.getDelta();
+                    this.mixer.update(dt);
+                }
             }
         }
 

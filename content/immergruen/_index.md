@@ -5,7 +5,7 @@ layout: "list"
 showHero: false          # No banner at the top of the gallery page
 cascade:
   showHero: true         # BUT show thumbnails for the art pieces inside!
-  showDate: false
+  showDate: true
   showSummary: true
   invertPagination: true
 ---
